@@ -951,16 +951,15 @@ int RgaBlit(rga_info *src, rga_info *dst, rga_info *src1)
 	}
 
 #ifndef RK3368
-	if(src->sync_mode == RGA_BLIT_ASYNC)
-	{
-		sync_mode = src->sync_mode;
-	}
 #ifdef	ANDROID_7_DRM
 	/* if Android 7.0 and above using drm should configure this parameter. */
 	rgaReg.render_mode |= RGA_BUF_GEM_TYPE_DMA;
 #endif
 #endif
-
+	if(src->sync_mode == RGA_BLIT_ASYNC)
+	{
+		sync_mode = src->sync_mode;
+	}
 	/* using sync to pass config to rga driver. */
 	if(ioctl(ctx->rgaFd, sync_mode, &rgaReg)) {
 		printf(" %s(%d) RGA_BLIT fail: %s",__FUNCTION__, __LINE__,strerror(errno));
